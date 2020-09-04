@@ -7,6 +7,11 @@ import org.springframework.stereotype.Component;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @description: 发送消息
+ * @date: 2020/8/6
+ * @author: ShiJiaNan
+ */
 @Component
 public class ProducerMessage {
 

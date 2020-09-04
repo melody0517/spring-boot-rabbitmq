@@ -1,9 +1,7 @@
 server:
   port: 8082
-spring:
-  application:
-    name: trade-service
 
+spring:
   rabbitmq:
     #127.0.0.1
     host: 127.0.0.1
@@ -11,11 +9,3 @@ spring:
     virtual-host: /attendparty
     username: sin_atendary
     password: sin_2020
-    #生产者确认模式
-    publisher-confirm-type: correlated
-    #开启发送失败退回
-    publisher-returns: true
-
-#订单超时时间
-order:
-  delay_time: 5

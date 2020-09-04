@@ -10,6 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @description: 绑定关系配置
+ * @date: 2020/9/4
+ * @author: ShiJiaNan
+ */
 @Configuration
 public class QueueConfig {
 
