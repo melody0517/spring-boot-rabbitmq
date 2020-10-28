@@ -21,3 +21,12 @@
 ###延时插件磁盘瓶颈
   由于延时插件是将消息先保存在交换机，达到可投递时间才投递至目标队列，所以不得不考虑消息堆积后磁盘的承受能力，目前我们采用的是延时和定时任务配合使用的策略，定时任务每隔两小时
   扫描一次，将接下来两小时内结束的活动以延时消息的形式发送给mq，这样可以很大程度减小mq所在服务器磁盘的压力，而且两小时对于定时任务来说也不会有压力，当然也可以将rabbitmq集群部署来解决这个问题。     
+  
+
+###使用mqtt插件实现发布/订阅功能
+  系统公告、通知可以在用户在线时实时推送给用户，不需要用户在首页进行刷新页面而获取，若用户不在线，持久化处理后的数据在用户登录后立即拉取。
+  准备工作：启动rabbitmq的插件，执行rabbitmq-plugins enable rabbitmq_mqtt，rabbitmq-plugins enable rabbitmq_web_mqtt
+  
+  本项目访问**localhost:8082/page/enter**进入首页，通过修改index.html中的订阅topic来订阅不同的主题
+  本地post请求**http://localhost:8082/notice/create**，参数为 {"title":"系统更新公告","message":"角色模块进行更新","senderId":17,"senderName":"史佳男","receiveType":1,"receive":"全网"}，
+  模拟发布公告，receiveType值为1对应topic为public，值为2时对应topic为admin，值为3时对应topic为handler
