@@ -15,22 +15,26 @@
 </body>
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
 <script>
+
     //RabbitMQ的web-mqtt连接地址
-    const url = 'ws://localhost:15675/ws';
+    const url = 'ws://47.111.182.198:15675/ws';
     //获取订阅的topic
-    const topic = "handler";
-    const topic1 = "public";
+    const topic = "admin";
+    const topic1 = "handler";
 
     //连接到消息队列
     let client = mqtt.connect(url);
+    console.log(client)
     client.on('connect', function () {
         //连接成功后订阅topic
         client.subscribe(topic, function (err) {
+            console.log(err)
             if (!err) {
                 showMessage("订阅topic：" + topic + "成功！");
             }
         });
         client.subscribe(topic1, function (err) {
+            console.error(err)
             if (!err) {
                 showMessage("订阅topic1：" + topic1 + "成功！");
             }
@@ -44,6 +48,7 @@
         console.log(json);
         showMessage("消息的内容为：" + json.message);
     });
+
 
     //发送消息
     function sendMessage() {

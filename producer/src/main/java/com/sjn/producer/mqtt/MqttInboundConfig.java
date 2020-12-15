@@ -1,12 +1,16 @@
 package com.sjn.producer.mqtt;
 
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.core.MessageProducer;
+import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
+import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
 import org.springframework.messaging.Message;
@@ -23,8 +27,14 @@ import org.springframework.messaging.MessagingException;
 @Configuration
 public class MqttInboundConfig {
 
+    @Value("${spring.mqtt.client.id}")
+    private String clientId;
+
+    @Value("${spring.mqtt.default.topic}")
+    private String topic;
+
     @Autowired
-    private MqttConfig mqttConfig;
+    private MqttPahoClientFactory mqttPahoClientFactory;
 
     @Bean
     public MessageChannel mqttInputChannel() {
@@ -34,12 +44,10 @@ public class MqttInboundConfig {
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter(mqttConfig.getUrl(), "subscriberClient",
-                        mqttConfig.getDefaultTopic());
-        adapter.setCompletionTimeout(5000);
+                new MqttPahoMessageDrivenChannelAdapter(clientId + "_inbound2", mqttPahoClientFactory, topic.trim().split(","));
+        adapter.setCompletionTimeout(3000);
         adapter.setConverter(new DefaultPahoMessageConverter());
-        //设置消息质量：0->至多一次；1->至少一次；2->只有一次
-        adapter.setQos(0);
+        adapter.setQos(2);
         adapter.setOutputChannel(mqttInputChannel());
         return adapter;
     }
@@ -47,14 +55,9 @@ public class MqttInboundConfig {
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public MessageHandler handler() {
-        return new MessageHandler() {
-
-            @Override
-            public void handleMessage(Message<?> message) throws MessagingException {
-                //处理订阅消息
-                log.info("handleMessage : {}", message.getPayload());
-            }
-
+        return message -> {
+            //处理订阅消息
+            log.info("handleMessage : {}", message.getPayload());
         };
     }
 }

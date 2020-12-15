@@ -1,6 +1,5 @@
 package com.sjn.producer.component;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -17,7 +16,7 @@ public class MessageServiceImplTest {
     @Autowired
     private ProducerMessage producerMessage;
 
-    @Test
+//    @Test
     public void sendMsg() throws InterruptedException {
         //先入后消费
         producerMessage.sendMsg("hello", 20 * 1000);
