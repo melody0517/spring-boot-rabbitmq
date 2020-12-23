@@ -1,6 +1,5 @@
 package com.sjn.producer.mqtt;
 
-import com.sjn.producer.model.Notice;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -29,14 +28,6 @@ public interface MqttGateway {
      * @param topic   主题
      */
     void sendToMqtt(String payload, @Header(MqttHeaders.TOPIC) String topic);
-
-    /**
-     * 发送消息到指定topic.
-     *
-     * @param payload 消息体
-     * @param topic   主题
-     */
-    void sendToMqtt(Notice payload, @Header(MqttHeaders.TOPIC) String topic);
 
     /**
      * 发送消息到指定topic并设置QOS.

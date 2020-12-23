@@ -7,18 +7,18 @@ spring:
 
   rabbitmq:
     #127.0.0.1
-    host: 47.111.182.198
+    host: 47.111.188.22
     port: 5672
     virtual-host: /djtravel2
-    username: mqtt_test
-    password: mqtt_test
+    username: sin_mqtt
+    password: sin_mqtt
 
   mqtt:
-    username: mqtt_test
+    username: sin_mqtt
     #MQTT-密码password: password
-    password: mqtt_test
+    password: sin_mqtt
     #MQTT-服务器连接地址，如果有多个，用逗号隔开，如：tcp://127.0.0.1:1883，tcp://192.168.2.133:1883
-    url: tcp://47.111.182.198:1883
+    url: tcp://47.111.188.22:1883
     #MQTT-连接服务器默认客户端ID
     client:
       id: sjn
